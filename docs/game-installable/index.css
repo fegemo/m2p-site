@@ -1,0 +1,14 @@
+.code-example {
+    width: fit-content;
+    border-radius: 12px;
+    padding: 1em;
+    background: #f5f5f596;
+}
+
+.file-name {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.frost-glass {
+    margin-bottom: 1.5em;
+}

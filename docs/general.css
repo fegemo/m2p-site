@@ -1,0 +1,60 @@
+html, body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Fira Sans', sans-serif;
+    background-image: linear-gradient(to right bottom, transparent, #7257abd4), url(/images/gym-bike-scene.webp);
+    background-position: center center;
+    background-size: cover;
+    background-blend-mode: color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Exo 2', sans-serif;
+}
+
+code {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.logo > img {
+    max-height: 120px;
+    max-width: 100%;
+}
+
+main > header > h1 {
+    margin-bottom: 0.25em;
+}
+
+main > header {
+    display: flex;
+    gap: 2em;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: #fff5;
+    backdrop-filter: blur(10px);
+    margin: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 8px 8px 5px #0003;
+    padding: 0.25em 1.5em;
+}
+
+main > .content {
+    padding: 1.5rem;
+}
+
+a:link {
+    text-decoration: none;
+    color: rebeccapurple;
+    position: relative;
+}
+
+.frost-glass {
+    background-color: #fff9;
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 8px 8px 5px #0003;
+}

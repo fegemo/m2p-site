@@ -1,0 +1,41 @@
+
+.paper-list,
+.action-list {
+    list-style-type: none;
+    display: flex;
+}
+
+.paper-list {
+    flex-direction: column;
+    gap: 1em;
+}
+
+.action-list {
+    gap: 1.5em;
+}
+
+.actions {
+    margin-left: auto;
+    width: fit-content;
+}
+
+.author-list {
+    font-style: italic;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.actions a:hover {
+    color: palegoldenrod;
+}
+
+.actions a:hover::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    inset: -0.5em;
+    background-color: #392866;
+    z-index: -1;
+}
