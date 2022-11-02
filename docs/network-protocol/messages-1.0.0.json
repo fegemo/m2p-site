@@ -1,0 +1,514 @@
+{
+    "version": "1.0.0",
+    "messages": [
+        {
+            "name": "findConsole",
+            "description": "Mensagem enviada por cliente para descobrir se há consoles ativos na rede.",
+            "sender": "cliente",
+            "receiver": "console",
+            "sentWhen": "Quando um cliente deseja descobrir se há consoles disponíveis para se conectarem. Tipicamente, clientes enviam esta mensagem para descobrir em que console(s) o jogador pode se conectar.",
+            "encoding": "JSON",
+            "format": {
+                "template": "find-console.json",
+                "params": {}
+            },
+            "hasResponse": true,
+            "responseFormat": {
+                "template": "find-console-response.json",
+                "params": {
+                    "ip": {
+                        "description": "Endereço IP do computador onde o console está ativo.",
+                        "samples": [
+                            "192.168.10.7",
+                            "200.240.12.1",
+                            "..."
+                        ]
+                    },
+                    "port": {
+                        "description": "Porta em que o console está aceitando novas conexões TCP/IP de usuários.",
+                        "samples": [
+                            "4444",
+                            "4446",
+                            "4448",
+                            "etc."
+                        ]
+                    }
+                }
+            },
+            "failures": {}
+        },
+        {
+            "name": "connectConsole",
+            "description": "Mensagem enviada por um cliente que quer se conectar a um console em determinado IP e porta.",
+            "sender": "cliente",
+            "receiver": "console",
+            "sentWhen": "Quando um cliente quer se conectar a um console para ver quais jogos ele possui e jogar.",
+            "encoding": "JSON",
+            "format": {
+                "template": "connect-console.json",
+                "params": {
+                    "player.uuid": {
+                        "description": "Identificador do jogador que quer se conectar ao console.",
+                        "samples": [
+                            "rk14-b9ajd-21j4-jakd",
+                            "uas2-di5ml-3520-kdl2",
+                            "alsd-e2394-kjl4-ddq5",
+                            "etc."
+                        ]
+                    },
+                    "player.name": {
+                        "description": "Nome do jogador que quer se conectar ao console.",
+                        "samples": [
+                            "Jonas Manoel",
+                            "Ariomar Silvestre",
+                            "All Might'o"
+                        ]
+                    },
+                    "player.color[0]": {
+                        "description": "Componente vermelha da cor do jogador que quer se conectar ao console.",
+                        "samples": [
+                            1,
+                            87,
+                            95,
+                            "...",
+                            213,
+                            255
+                        ]
+                    },
+                    "player.color[1]": {
+                        "description": "Componente verde da cor do jogador que quer se conectar ao console.",
+                        "samples": [
+                            1,
+                            87,
+                            95,
+                            "...",
+                            213,
+                            255
+                        ]
+                    },
+                    "player.color[2]": {
+                        "description": "Componente azul da cor do jogador que quer se conectar ao console.",
+                        "samples": [
+                            1,
+                            87,
+                            95,
+                            "...",
+                            213,
+                            255
+                        ]
+                    }
+                }
+            },
+            "hasResponse": true,
+            "responseFormat": {
+                "template": "connect-console-response.json",
+                "params": {
+                    "activeGame": {
+                        "description": "Qual jogo está aberto - em sala de espera ou em curso - no console em que o jogador está conectado. Se não houver jogo aberto, contém apenas um objeto vazio.",
+                        "samples": [
+                            {},
+                            {
+                                "gameUUID": "56418ad4-a108-11ea-bb37-0242ac130002",
+                                "minPlayers": 1,
+                                "maxPlayers": 4,
+                                "status": "waitingRoom",
+                                "players": [
+                                    {
+                                        "uuid": "uas2-di5ml-3520-kdl2",
+                                        "name": "Ariomar Silvestre",
+                                        "color": [
+                                            120,
+                                            135,
+                                            85
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "activeGame.gameUUID": {
+                        "description": "Identificador do jogo que está atualmente ativo no console.",
+                        "samples": [
+                            "56418ad4-a108-11ea-bb37-0242ac130002",
+                            "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682"
+                        ]
+                    },
+                    "activeGame.status": {
+                        "description": "Situação do jogo - sala de espera ou em curso",
+                        "samples": [
+                            "waitingRoom",
+                            "gameRunning",
+                            "finished"
+                        ]
+                    },
+                    "activeGame.players": {
+                        "description": "Lista de jogadores atualmente no jogo ativo"
+                    },
+                    "activeGame.minPlayers": {
+                        "description": "Número mínimo de jogadores para que seja possível jogar este jogo",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            "etc."
+                        ]
+                    },
+                    "activeGame.maxPlayers": {
+                        "description": "Número máximo de jogadores que podem estar neste jogo",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            "...",
+                            20,
+                            "etc."
+                        ]
+                    },
+                    "availableGames": {
+                        "description": "Lista de jogos que estão disponíveis no console - que podem ser jogados.",
+                        "samples": [
+                            [
+                                {
+                                    "UUID": "56418ad4-a108-11ea-bb37-0242ac130002",
+                                    "name": "Fast Sword",
+                                    "coverImageString64Bits": "file-content-in-base64"
+                                },
+                                {
+                                    "UUID": "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682",
+                                    "name": "Runner Race",
+                                    "coverImageString64Bits": "file-content-in-base64"
+                                }
+                            ]
+                        ]
+                    }
+                }
+            },
+            "failures": {}
+        },
+        {
+            "name": "chooseGame",
+            "description": "Mensagem enviado por um cliente que quer jogar um jogo, que pode estar na sala de espera ou pode estar em curso.",
+            "sender": "cliente",
+            "receiver": "console",
+            "sentWhen": "Quando um jogador escolhe o jogo que quer entrar nele, que pode já ter uma sala aberta ou estar em andamento.",
+            "encoding": "JSON",
+            "format": {
+                "template": "choose-game.json",
+                "params": {
+                    "gameUUID": {
+                        "description": "Identificador do jogo que o usuário escolheu para jogar.",
+                        "samples": [
+                            "56418ad4-a108-11ea-bb37-0242ac130002",
+                            "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682"
+                        ]
+                    }
+                }
+            },
+            "hasResponse": true,
+            "responseFormat": {
+                "template": "success.json",
+                "params": {}
+            },
+            "failures": {}
+        },
+        {
+            "name": "activeGame",
+            "description": "Mensagem enviada pelo console a todos clientes para indicar que jogo está ativo, qual sua situação e que jogadores estão nele.",
+            "sender": "console",
+            "receiver": "cliente",
+            "sentWhen": "Em algumas situações indicando mudança de estado no console. Por exemplo, quando uma sala de espera é aberta, quando uma partida se inicia ou se encerra.",
+            "encoding": "JSON",
+            "format": {
+                "template": "active-game.json",
+                "params": {
+                    "gameUUID": {
+                        "description": "Identificador do jogo que o usuário escolheu para jogar ou ausente, em caso de não haver jogo.",
+                        "samples": [
+                            "56418ad4-a108-11ea-bb37-0242ac130002",
+                            "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682"
+                        ]
+                    },
+                    "status": {
+                        "description": "Situação do jogo - sala de espera, em curso ou sem jogo (idle).",
+                        "samples": [
+                            "waitingRoom",
+                            "gameRunning",
+                            "idle"
+                        ]
+                    },
+                    "players": {
+                        "description": "Lista de jogadores que estão neste jogo ou ausente, em caso de não haver jogo.",
+                        "samples": [
+                            [
+                                {
+                                    "uuid": "alsd-e2394-kjl4-ddq5",
+                                    "name": "Jonas Manoel",
+                                    "color": [
+                                        131,
+                                        198,
+                                        104
+                                    ]
+                                }
+                            ]
+                        ]
+                    },
+                    "minPlayers": {
+                        "description": "Número mínimo de jogadores para que seja possível jogar este jogo (ou ausente, se sem jogo).",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            "etc."
+                        ]
+                    },
+                    "maxPlayers": {
+                        "description": "Número máximo de jogadores que podem estar neste jogo (ou ausente, se sem jogo).",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            "...",
+                            20,
+                            "etc."
+                        ]
+                    }
+                }
+            },
+            "hasResponse": false,
+            "failures": {}
+        },
+        {
+            "name": "ready",
+            "description": "Mensagem enviada pelo console a um cliente para indicar que está ativo e verificar se o cliente também está.",
+            "sender": "cliente",
+            "receiver": "console",
+            "sentWhen": "De tempos em tempos, quando o console quer indicar que continua ativo a seus clientes conectados e por cada cliente, para indicar que continua conectado para o console.",
+            "encoding": "JSON",
+            "format": {
+                "template": "ready.json",
+                "params": {
+                    "gameUUID": {
+                        "description": "Identificador do jogo para o qual o usuário se declara pronto para começar.",
+                        "samples": [
+                            "56418ad4-a108-11ea-bb37-0242ac130002",
+                            "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682"
+                        ]
+                    }
+                }
+            },
+            "hasResponse": true,
+            "responseFormat": {
+                "template": "ready-response.json",
+                "params": {
+                    "instructions": {
+                        "description": "Instruções sobre como o jogo deve ser jogado.",
+                        "samples": [
+                            "Apenas exercite-se o mais rápido que puder"
+                        ]
+                    },
+                    "gameDuration": {
+                        "description": "Duração da sessão de jogo em segundos - quanto tempo ele estará ativo.",
+                        "samples": [
+                            120,
+                            240,
+                            360,
+                            "...",
+                            1200,
+                            "etc."
+                        ]
+                    },
+                    "countDownGameDuration": {
+                        "description": "Tempo de espera em segundos para que o jogo comece, assim que a sessão for iniciada.",
+                        "samples": [
+                            10,
+                            15,
+                            20,
+                            "etc."
+                        ]
+                    }
+                }
+            },
+            "failures": {}
+        },
+        {
+            "name": "move",
+            "description": "Mensagem enviada por um cliente quando o jogador faz um (ou mais) movimento(s) estando dentro de um jogo.",
+            "sender": "cliente",
+            "receiver": "console",
+            "sentWhen": "Frequentemente quando o jogador está dentro de um jogo e se movimenta.",
+            "encoding": "JSON",
+            "format": {
+                "template": "move.json",
+                "params": {
+                    "numberMovements": {
+                        "description": "Número de movimentos realizados pelo jogador.",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            "..."
+                        ]
+                    }
+                }
+            },
+            "hasResponse": false,
+            "failures": {}
+        },
+        {
+            "name": "finishingGame",
+            "description": "Mensagem enviada pelo console a um cliente que estava jogando indicando que a sessão de um jogo está concluída e quais são os resultados do jogador.",
+            "sender": "console",
+            "receiver": "cliente",
+            "sentWhen": "Quando o console determina que a sessão de jogo chegou ao fim.",
+            "encoding": "JSON",
+            "format": {
+                "template": "finishing-game.json",
+                "params": {
+                    "gameUUID": {
+                        "description": "Identificador do jogo cuja sessão em que o jogador estava acaba de terminar.",
+                        "samples": [
+                            "56418ad4-a108-11ea-bb37-0242ac130002",
+                            "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682"
+                        ]
+                    },
+                    "moves": {
+                        "description": "Quantidade total de movimentos realizados pelo jogador durante a sessão de jogo.",
+                        "samples": [
+                            90,
+                            456,
+                            600,
+                            "etc."
+                        ]
+                    },
+                    "classification": {
+                        "description": "Classificação em ranking do jogador dentre todos os jogadores ativos na sessão de jogo que se encerrou.",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            "etc."
+                        ]
+                    }
+                }
+            },
+            "hasResponse": false,
+            "failures": {}
+        },
+        {
+            "name": "leaveGame",
+            "description": "Mensagem enviada pelo cliente a um console para indicar que este jogador quer sair do jogo, que pode estar na sala de espera ou em curso.",
+            "sender": "cliente",
+            "receiver": "console",
+            "sentWhen": "Quando o jogador indica que quer sair do jogo ativo.",
+            "encoding": "JSON",
+            "format": {
+                "template": "leave-game.json",
+                "params": {
+                    "gameUUID": {
+                        "description": "Identificador do jogo do qual o usuário quer sair.",
+                        "samples": [
+                            "56418ad4-a108-11ea-bb37-0242ac130002",
+                            "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682"
+                        ]
+                    }
+                }
+            },
+            "hasResponse": true,
+            "responseFormat": {
+                "template": "success.json",
+                "params": {}
+            },
+            "failures": {}
+        },
+        {
+            "name": "gameInfo",
+            "description": "Mensagem enviada por um cliente ao console para obter mais informações sobre um jogo.",
+            "sender": "cliente",
+            "receiver": "console",
+            "sentWhen": "Quando um jogador seleciona um jogo para obter mais detalhes - mais imagens, descrições etc.",
+            "encoding": "JSON",
+            "format": {
+                "template": "game-info.json",
+                "params": {
+                    "gameUUID": {
+                        "description": "Identificador do jogo do qual o usuário quer obter mais informações.",
+                        "samples": [
+                            "56418ad4-a108-11ea-bb37-0242ac130002",
+                            "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682"
+                        ]
+                    }
+                }
+            },
+            "hasResponse": true,
+            "responseFormat": {
+                "template": "game-info-response.json",
+                "params": {
+                    "description": {
+                        "description": "Descrição deste jogo.",
+                        "samples": [
+                            "Jogo no qual você deve se exercitar para ter forças e derrotar os inimigos"
+                        ]
+                    },
+                    "minPlayers": {
+                        "description": "Número mínimo de jogadores para que seja possível jogar este jogo",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            "etc."
+                        ]
+                    },
+                    "maxPlayers": {
+                        "description": "Número máximo de jogadores que podem estar neste jogo",
+                        "samples": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            "...",
+                            20,
+                            "etc."
+                        ]
+                    },
+                    "gameImages": {
+                        "description": "",
+                        "samples": [
+                            [
+                                "file-content-in-base64",
+                                "file-content-in-base64",
+                                "file-content-in-base64",
+                                "file-content-in-base64"
+                            ]
+                        ]
+                    }
+                }
+            },
+            "failures": {}
+        },
+        {
+            "name": "heartbeat",
+            "description": "Mensagem enviada pelo console a um cliente para indicar que está ativo e verificar se o cliente também está.",
+            "sender": "console",
+            "receiver": "cliente",
+            "sentWhen": "De tempos em tempos, quando o console quer indicar que continua ativo a seus clientes conectados e por cada cliente, para indicar que continua conectado para o console.",
+            "encoding": "JSON",
+            "format": {
+                "template": "heartbeat.json",
+                "params": {}
+            },
+            "hasResponse": true,
+            "responseFormat": {
+                "template": "heartbeat.json",
+                "params": {}
+            },
+            "failures": {}
+        }
+    ]
+}

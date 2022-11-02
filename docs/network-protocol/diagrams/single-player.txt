@@ -1,0 +1,46 @@
+participant Jogador as p
+participant Move2Control as m2c
+participant Console as csl
+p->m2c: 1: conectar ao console
+m2c->csl: 2. connectConsole
+csl->m2c: 3. resposta a connectConsole
+m2c->p: 4. lista de jogos / nenhum ativo
+Note right of p: 
+Note right of p: 
+Note right of p: 
+Note right of p: 
+p->m2c: 5. seleciona um jogo\npara obter mais informações
+m2c->csl: 6. gameInfo
+csl->m2c: 7. resposta a gameInfo
+m2c->p: 8. visualiza detalhes do jogo
+p->m2c: 9. escolhe esse jogo
+Note right of p: Jogo com mínimo\nde 1 jogador
+m2c->csl: 10. chooseGame
+csl->m2c: 11. resposta a chooseGame
+csl-->m2c: 12. activeGame
+m2c->p: 13. enviado para sala de espera
+p->m2c: 14. estou pronto
+m2c->csl: 15. ready
+csl->m2c: 16. resposta a ready
+Note left of csl:
+Note left of csl:
+Note left of csl:
+Note left of csl:
+csl-->m2c: 17. activeGame
+m2c->p: 18. recebe instruções / começa a jogar
+Note left of csl:
+Note left of csl:
+Note left of csl:
+Note left of csl:
+p->m2c: 19. se movimenta
+m2c->csl: 20. move
+m2c->csl: 21. move
+m2c->csl: 22. move
+Note left of csl:
+Note left of csl:
+Note left of csl:
+Note left of csl:
+csl-->m2c: 23. finishingGame
+m2c->p: 24. mostra resultado da sessão
+csl-->m2c: 25. activeGame
+m2c->p: 26. tela inicial sem jogo aberto

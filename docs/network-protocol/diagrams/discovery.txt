@@ -1,0 +1,9 @@
+participant Controller as p
+participant Network as n
+participant Console 1 as c1
+participant Console 2 as c2
+p->n: 1. broadcast findConsole
+n->c1: 2. findConsole
+n->c2: 2. findConsole
+c1->p: 3. resposta a findConsole
+c2->p: 3. resposta a findConsole

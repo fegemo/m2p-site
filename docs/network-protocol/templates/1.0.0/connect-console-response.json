@@ -1,0 +1,32 @@
+{
+    "activeGame": {
+        "gameUUID": "56418ad4-a108-11ea-bb37-0242ac130002",
+        "minPlayers": 1,
+        "maxPlayers": 4,
+        "status": "waitingRoom",
+        "players": [
+            {
+                "uuid": "uas2-di5ml-3520-kdl2",
+                "name": "Ariomar Silvestre",
+                "color": [
+                    120,
+                    135,
+                    85
+                ]
+            }
+        ]
+    },
+    "availableGames": [
+        {
+            "UUID": "56418ad4-a108-11ea-bb37-0242ac130002",
+            "name": "Fast Sword",
+            "coverImageString64Bits": "file-content-in-base64"
+        },
+        {
+            "UUID": "b9c5689a-16c0-46e8-ac20-fcbc1b7b0682",
+            "name": "Runner Race",
+            "coverImageString64Bits": "file-content-in-base64"
+        }
+    ],
+    "success": true
+}

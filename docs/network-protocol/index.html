@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo de Redes do Move2Play</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram-min.css">
+    <link rel="stylesheet" href="documentation.css">
+    <link rel="shortcut icon" href="controller.svg">
+</head>
+
+<body>
+    <header>
+        <h1>Protocolo de Redes do Move2Play</h1>
+    </header>
+    <main class="ui grid relaxed">
+        <div class="seven wide column">
+            <p>
+                O Move2Play utiliza este protocolo para realizar a comunicação entre o console e os
+                controles. Ele é um protocolo de camada de aplicação simples, baseado em sua maior
+                parte no transporte TCP/IP, com UDP/IP sendo usado apenas na descoberta de consoles na rede.
+            </p>
+            <p>
+                Todas as mensagens trocadas entre console e cliente (controles) podem ser encontradas no
+                <a href="#message-links">rodapé</a>.
+                Além disso, os sinais escrito em <span class="clickable">roxo</span> no diagrama de sequência também podem ser
+                clicados para visualizar detalhes sobre um tipo de mensagem.
+            </p>
+            <p>
+                As mensagens podem ser enviadas tanto pelo cliente <i data-tooltip="cliente"><img src="controller.svg" alt="cliente"></i>
+                ao console, chamadas de <strong>requisições</strong>, quanto pelo console <i data-tooltip="console"><img src="console.svg" alt="console"></i> e todas elas
+                são codificadas em JSON. A maior parte das requisições possuem <strong>respostas</strong>, 
+                outras não (como a <code>move</code>).
+            </p>
+            <p>
+                Há mensagens dentro de fluxos (→ no diagrama) e fora de fluxo (⇢ no diagrama). As primeiras
+                são enviadas em momentos bem definidos, como <code>connectConsole</code>, <code>ready</code>, etc.
+                As outras são enviadas praticamente a qualquer momento, 
+                como a <code>activeGame</code> ou <code>heartbeat</code>. Uma resposta sempre é uma mensagem
+                dentro de fluxo.
+            </p>
+        </div>
+        <div class="nine wide column">
+            <div class="ui buttons" id="diagram-selector">
+                <button class="ui button active" data-diagram="single-player">Interação de 1 jogador</button>
+                <button class="ui button" data-diagram="three-players">Interação de 3 jogadores</button>
+                <button class="ui button" data-diagram="heartbeat" data-description>Mensagens de status</button>
+                <button class="ui button" data-diagram="discovery" data-description>Mensagens de descoberta</button>
+            </div>
+            <div id="diagram-description">
+                <div class="ui placeholder">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <template id="single-player-description">
+                <p>Roteiro de partida com apenas 1 jogador:</p>
+                <ul>
+                    <li>Um jogador</li>
+                    <li>Jogo com mínimo de 1</li>
+                    <li>Jogador joga até o final</li>
+                </ul>
+            </template>
+            <template id="three-players-description">
+                <p>Roteiro de partida com 3 usuários sendo:</p>
+                <ul>
+                    <li>Um observador (jogador 1)</li>
+                    <li>Dois jogadores (2 e 3)</li>
+                    <li>Um jogo com mínimo de 2 jogadores</li>
+                    <li>Jogo chega até o final sem ninguém sair</li>
+                </ul>
+                <p>Os usuários:</p>
+                <ul>
+                    <li>Jogador 1: conectou, mas não quer jogar</li>
+                    <li>Jogador 2: conectou e abriu sala de espera do jogo X (que requer 2 jogadores)</li>
+                    <li>Jogador 3: conectou, tentou jogar Y (falhou), depois optou por X mesmo</li>
+                </ul>
+            </template>
+            <template id="heartbeat-description">
+                <p>
+                    Roteiro de 1 jogador conectado ao console mostrando o <em>heartbeating</em> para determinar status de conexão.
+                </p>
+                <ul>
+                    <li>Jogador se conecta ao console</li>
+                    <li>Console começa um timer sempre que recebe uma mensagem desse jogador</li>
+                    <li>Se o timer chega ao fim antes que uma nova mensagem chegue ao console, ele envia novo <em>heartbeat</em></li>
+                    <li>Se o cliente não responde a um heartbeat em determinado tempo (timeout), ele é considerado desconectado</li>
+                </ul>
+            </template>
+            <template id="discovery-description">
+                <p>
+                    Roteiro de um usuário procurando consoles na rede.
+                </p>
+                <ul>
+                    <li>Controle envia mensagem UDP/IP em broadcast na rede</li>
+                    <li>Rede espalha mensagem para todos computadores locais</li>
+                    <li>Consoles na rede recebem a mensagem e respondem para quem enviou (controle)</li>
+                </ul>
+            </template>
+        </div>
+        <div class="seven wide column">
+            <div id="message">
+            </div>
+        </div>
+        <div class="nine wide column">
+            <div id="diagram">
+                <div class="ui placeholder" style="width: 100%;">
+                    <div class="image" style="height: 600px; width: 90%;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="ui grid">
+        <div class="sixteen wide column">
+            <h2>Todas as mensagens do protocolo</h2>
+        </div>
+        <div class="sixteen wide column">
+            <div class="ui horizontal relaxed list" id="message-links">
+                <script type="template" id="message-link-template">
+                    <div class="item">
+                        <i class="message-direction icon" data-tooltip="<%= sender %> que envia" data-position="top center">
+                            <img src="<%= sender === 'console' ? 'console.svg' : 'controller.svg' %>" alt="<%= sender %>">
+                        </i>
+                        <code>
+                            <a href="#<%= name %>"><%= name %></a>
+                        </code>
+                    </div>
+                </script>
+            </div>
+        </div>
+    </footer>
+    <script type="template" id="message-template">
+        <h2>
+            <code><%= name %></code>
+            <span class="message-direction">
+                <i data-tooltip="<%= sender %>">
+                    <img src="<%= sender === 'console' ? 'console.svg' : 'controller.svg' %>" alt="<%= sender %>">
+                </i>
+                ⇨
+                <i data-tooltip="<%= receiver %>">
+                    <img src="<%= receiver === 'console' ? 'console.svg' : 'controller.svg' %>" alt="<%= receiver %>">
+                </i>
+            </span>
+        </h2>
+        <p><%= description %></p>
+        <dl>
+            <dt>Quando a mensagem é enviada:</dt>
+            <dd><%= sentWhen %></dd>
+            <dt>Formato da mensagem em <%= encoding %>:</dt>
+            <dd>
+                <pre class="format"><code class="lang-json"><%= format.content %></code></pre>
+            </dd>
+            <% if (hasResponse) { %>
+            <dt>Formato da resposta:</dt>
+            <dd>
+                <pre class="response-format"><code class="lang-json"><%= responseFormat.content %></code></pre>
+            </dd>
+            <% } else { %>
+            <dt>Há resposta:</dt>
+            <dd>não</dd>
+            <% } %>
+        </dl>
+    </script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-sequence-diagram@2.0.1/dist/sequence-diagram.min.js"></script>
+    <script type="module">
+        import { setupDiagramSelector, showDiagram } from './diagram.js';
+        import { loadMessages, populateMessageLinks } from './message.js';
+
+        (async function () {
+
+            // configuration
+            const config = await fetch('messages-1.0.0.json')
+                .then(r => r.json());
+
+
+                // messages
+            const $message = $('#message');
+            const $messageLinks = $('#message-links');
+            const $messageLinkTemplate = $('#message-link-template');
+
+            loadMessages(config, $message);
+            populateMessageLinks($message, $messageLinks, $messageLinkTemplate.html());
+
+
+            // diagrams
+            const $diagramSelectorParent = $('#diagram-selector');
+            const $diagramDescription = $('#diagram-description');
+            const $diagram = $('#diagram');
+
+            setupDiagramSelector($diagramSelectorParent, $diagramDescription, $diagram, $message);
+            showDiagram($diagram, $message, $diagramDescription, 'single-player');
+        }());
+    </script>
+</body>
+
+</html>

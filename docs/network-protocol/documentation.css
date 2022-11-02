@@ -1,0 +1,84 @@
+body {
+    padding: 1em;
+}
+
+main {
+    position: relative;
+}
+
+a:link,
+a:visited,
+.clickable {
+    cursor: pointer;
+    fill: blueviolet;
+    color: blueviolet;
+}
+
+a:hover {
+    color: #1e70bf;
+}
+
+p {
+    text-align: justify;
+}
+
+#diagram svg {
+    display: block;
+}
+
+#message {
+    position: sticky;
+    top: 0;
+}
+
+.message-direction {
+    float: right;
+}
+
+i img,
+.message-direction img {
+    height: 1em;
+    vertical-align: middle;
+}
+
+#diagram .placeholder {
+    margin: 0 auto;
+}
+
+#diagram .note.controller rect {
+    fill: #7de27d;
+    stroke: #2e822e;
+}
+
+#diagram .note.console rect {
+    fill: #ffff98;
+    stroke: #a4a700;
+}
+
+.message-param-name,
+.message-param-value {
+    cursor: pointer;
+    position: relative;
+}
+
+.message-param-name:hover,
+.message-param-value:hover {
+    background-color: azure;
+}
+
+.message-param-name::before,
+.message-param-value::before {
+    content: "ℹ️";
+    display: inline-block;
+    width: 1em;
+    font-size: 0.75em;
+}
+
+.message-param-name::before {
+    position: absolute;
+    left: -1.25em;
+}
+
+.message-param-value::before {
+    margin-right: 0.25em;
+}

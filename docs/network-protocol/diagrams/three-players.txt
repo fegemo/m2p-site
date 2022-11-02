@@ -1,0 +1,89 @@
+participant Jogador 1 as p1
+participant Jogador 2 as p2
+participant Jogador 3 as p3
+participant Console as csl
+Note right of csl: Estado{{c}}:\natoa
+p1->csl: 1: connectConsole
+Note right of csl: {{c}}Conectados:\n[1]
+csl->p1: 2. resposta a connectConsole
+Note left of p1: Estado{{p}}:\nconectado
+p2->csl: 3. connectConsole
+Note right of csl: {{c}}Conectados:\n[1, 2]
+csl->p2: 4. resposta a connectConsole
+Note left of p2: Estado{{p}}:\nconectado
+p3->csl: 5. connectConsole
+Note right of csl: {{c}}Conectados:\n[1, 2, 3]
+csl->p3: 6. resposta a connectConsole
+Note left of p3: Estado{{p}}:\nconectado
+Note right of csl:
+Note right of csl:
+Note right of csl:
+p2->csl: 7.chooseGame
+Note right of csl: Estado{{c}}:\nsala de espera
+Note right of csl: {{c}}\nNa sala: [2]\nProntos: []
+csl->p2: 8. resposta a chooseGame
+Note right of csl:
+Note right of csl:
+csl-->p3: 9. activeGame
+csl-->p2: 10. activeGame
+Note left of p2: Estado{{p}}:\nsala de espera
+csl-->p1: 11. activeGame
+Note right of csl:
+Note right of csl:
+p3->csl: 12. chooseGame
+csl->p3: 13. resposta a chooseGame (erro)
+Note right of csl:
+p3->csl: 14. chooseGame
+Note right of csl: {{c}}Na sala: [2, 3]\nProntos: []
+csl->p3: 15. resposta a chooseGame
+csl-->p3: 16. activeGame
+Note left of p3: Estado{{p}}:\nsala de espera
+csl-->p2: 17. activeGame
+csl-->p1: 18. activeGame
+Note right of csl:
+Note right of csl:
+Note right of csl:
+Note right of csl:
+p3->csl: 19. ready
+Note right of csl: {{c}}Na sala: [2, 3]\nProntos: [3]
+csl->p3: 20. resposta a ready
+Note right of csl:
+Note right of csl:
+p2->csl: 21. ready
+Note right of csl: {{c}}Na sala: [2, 3]\nProntos: [3, 2]
+Note right of csl: Estado{{c}}:\njogando
+csl->p2: 22. resposta a ready
+Note right of csl:
+Note right of csl:
+csl-->p3: 23. activeGame
+Note left of p3: Estado{{p}}:\njogando
+csl-->p2: 24. activeGame
+Note left of p2: Estado{{p}}:\njogando
+csl-->p1: 25. activeGame
+Note right of csl:
+Note right of csl:
+Note right of csl:
+Note right of csl:
+p3->csl: 26. move
+p3->csl: 27. move
+p2->csl: 28. move
+p3->csl: 29. move
+p2->csl: 30. move
+p2->csl: 31. move
+p3->csl: 32. move
+p3->csl: 33. move
+Note right of csl:
+Note right of csl:
+Note right of csl:
+Note right of csl:
+csl-->p3: 34. finishingGame
+Note left of p3: Estado{{p}}:\nconectado
+csl-->p2: 35. finishingGame
+Note left of p2: Estado{{p}}:\nconectado
+Note right of csl:
+Note right of csl:
+Note right of csl: Estado{{c}}:\natoa
+Note right of csl: {{c}}Na sala: []\nProntos: []
+csl-->p3: 36.activeGame
+csl-->p2: 37. activeGame
+csl-->p1: 38. activeGame

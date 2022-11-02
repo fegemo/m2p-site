@@ -1,0 +1,12 @@
+{
+    "messageType": "connectConsole",
+    "player": {
+        "uuid": "rk14-b9ajd-21j4-jakd",
+        "name": "Jonas Manoel",
+        "color": [
+            131,
+            198,
+            104
+        ]
+    }
+}

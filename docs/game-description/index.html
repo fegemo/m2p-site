@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Move2Play's Game Description</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Fira+Sans:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono&display=swap">
+  <link rel="shortcut icon" href="/images/icon.png">
+  <link rel="stylesheet" href="../general.css">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="logo">
+        <img src="../../images/logo.png" alt="Move2Play's logo with its written name and the drawing of sneakers in movement">
+      </div>
+      <h1>Game Description</h1>
+    </header>
+    <div class="content">
+
+      <div class="frost-glass">
+        <h2>An Installable ZIP</h2>
+        <p>For a user to install a new game through the Console, it must be provided in a specific file structure inside a ZIP archive:</p>
+        <ul class="file-structure">
+          <li>
+            <span class="file-name">game-installable-name.zip</span>
+            <ul>
+              <li>
+                <span class="file-name">images/</span>
+                <ul>
+                  <li>
+                    <span class="file-name">screenshot-name-1.jpg</span>
+                  </li>
+                  <li>
+                    <span class="file-name">screenshot-name-2.png</span>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <span class="file-name">game-executable.jar</span>
+              </li>
+              <li>
+                <span class="file-name">game-settings.json</span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <p>
+          The file names for the screenshots, the ZIP archive and executable JAR can be anything. But there must be an <span class="file-name">images</span> folder, as well as a
+          <span class="file-name">game-settings.json</span> file at the root.
+        </p>
+        <p>There can be other folders and files within the archive.</p>
+        <p>There should be at least one screenshot and they can have either the JPG or PNG formats.</p>
+      </div>
+
+      <div class="frost-glass">
+        <h2>Describing a Game</h2>
+        <p>
+          A game in Move2Play needs to be described by a <code>game-settings.json</code> file sitting in the root of the game folder.
+        </p>
+        <p>
+          It should contain the following fields:
+        </p>
+        <pre class="code-example"><code>{
+    "name": "Runner Race",
+    "UUID": "b9c5689a-16c0-46e8-ac20",
+    "description": "Jump obstacles!",
+    "instructions": "Affix your phone in your armlet and start exercising.",
+    "minPlayers": 1, 
+    "maxPlayers": 4,
+    "allowNewPlayersWhileRunning": true,
+    "version": "1.0",
+    "categories": ["sports", "running"],
+    "developerName": "Move2Play team",
+    "developerContact": "about@move2play.com.br",
+    "storeId": "3",
+    "images": ["ss1.jpg", "ss2.jpg"],
+    "coverImageIndex": 0,
+    "gameLoader": {
+        "type": "game-opener",
+        "settings": [
+            {
+                "name": "fullClassName", "type": "String",
+                "value": "br.move2play.DesktopLauncher"
+            }
+        ]
+    },
+    "matchDurations": [20, 60, 120, 300, 600],
+    "matchDurationIndex": 0
+}</code></pre>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+participant Jogador as p
+participant Console as c
+p->c: 1. connectConsole
+c->p: 2. resposta a connectConsole
+Note left of p: {{p}}Estado:\nconectado
+Note right of c: Começa novo timer\npara próximo\nheartbeat
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c: Concluiu o tempo\nmáximo sem interagir
+c-->p: 3. heartbeat
+p->c: 4. heartbeat
+Note right of c: Começa novo timer\npara próximo\nheartbeat
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c:
+p->c: 5. gameInfo
+Note right of c: Recomeça o timer\npara próximo\nheartbeat
+c->p: resposta a gameInfo
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c:
+Note left of p: Jogador fechou\naplicativo
+Note left of p: {{p}}Estado:\ndesconectado
+Note right of c:
+Note right of c:
+Note right of c:
+Note right of c: Concluiu o tempo\nmáximo sem interagir
+c-->p: 3. heartbeat
+Note right of c:
+Note right of c:
+Note right of c: Timeout do heartbeat.\nCliente considerado\ndesconectado pelo\nconsole
+Note right of c:
+Note right of c:

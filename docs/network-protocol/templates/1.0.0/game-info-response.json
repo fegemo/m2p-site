@@ -1,0 +1,12 @@
+{
+    "success": true,
+    "description": "Exercite para vencer a corrida.",
+    "minPlayers": 1,
+    "maxPlayers": 4,
+    "gameImages": [
+        "file-content-in-base64",
+        "file-content-in-base64",
+        "file-content-in-base64",
+        "file-content-in-base64"
+    ]
+}
